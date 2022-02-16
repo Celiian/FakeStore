@@ -1,12 +1,14 @@
 <script setup>
 import Product from "@/components/Product.vue";
 </script>
-
+<script l>
+const Na = "Na"
+</script>
 <template>
-  <div class="divPresentation">
-    <Product :number="Math.floor(Math.random() * 17) + 1" />
-    <Product :number="Math.floor(Math.random() * 17) + 1" />
-    <Product :number="Math.floor(Math.random() * 17) + 1" />
+  <div class="divPresentation" >
+    <Product :number="Math.floor(Math.random() * 17) + 1" :category=this.Na :limit=0 />
+    <Product :number="Math.floor(Math.random() * 17) + 1" :category=this.Na :limit=0 />
+    <Product :number="Math.floor(Math.random() * 17) + 1" :category=this.Na :limit=0 />
   </div>
 </template>
 

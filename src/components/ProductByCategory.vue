@@ -1,7 +1,10 @@
 <script>
+import Product from './Product.vue';
 export default {
+  components: { Product },
   props: {
-    number: Number,
+    category: String,
+    limit: Number,
   },
   data() {
     return {
@@ -12,32 +15,46 @@ export default {
   async created() {
     console.log(this.category);
     var response = {};
-    response = await fetch("https://fakestoreapi.com/products/" + this.number);
+
+    response = await fetch(
+      "https://fakestoreapi.com/products/category/" +
+        this.category +
+        "?limit=" +
+        this.limit
+    );
+
     const data = await response.json();
     this.produits = data;
+    console.log(data)
   },
 };
 </script>
 
 <template>
-  <div class="divProd">
+<div v-for="item in this.produits" v-bind:key="item.id" class="Products">
+    <div class="divProd">
     <div class="divLeft">
       <a>
-        <h3 class="title">{{ produits.title }}</h3>
+        <h3 class="title">{{ item.title }}</h3>
       </a>
     </div>
     <div class="divRight">
       <div class="divImg">
-        <img class="img" :src="produits.image" />
-        <span>{{ produits.price }} €</span>
+        <img class="img" :src="item.image" />
+        <span>{{ item.price }} €</span>
       </div>
       <!-- <span class="rating">{{ produits.rating }}⭐ / 5 ( {{produits.rating}})</span>-->
     </div>
   </div>
+</div>
 </template>
 
 
 <style>
+.Products {
+    margin: 10px;
+}
+
 .divProd {
   display: flex;
   width: 350px;
