@@ -8,7 +8,7 @@ export default {
 
  data() {
     return {
-      produits: [],
+      categories: [],
     };
   },
 
@@ -17,7 +17,7 @@ async created() {
         "https://fakestoreapi.com/products/categories"
       );
     const data = await response.json();
-    this.produits = data;
+    this.categories = data;
   },
 };
 </script>
@@ -25,8 +25,7 @@ async created() {
 
 <template>
 <div>
-
-  <div v-for="item in this.produits" v-bind:key="item" class="divCategory">
+  <div v-for="item in this.categories" v-bind:key="item" class="divCategory">
     <p class="categoryName">{{item}} :</p>
     <div class="divProducts">
     <ProductByCategory :category="item" :limit=20 />

@@ -1,5 +1,6 @@
 <script>
-import Product from './Product.vue';
+import Product from "./Product.vue";
+import { selectedItemStore } from '../stores/selectedItems'
 export default {
   components: { Product },
   props: {
@@ -11,9 +12,15 @@ export default {
       produits: [],
     };
   },
+  methods: {
+    selectProduct(item) {
+    const selectedProduct = selectedItemStore();
+    selectedProduct.setChoosedProduct(item)
+    },
+  
+  },
 
   async created() {
-    console.log(this.category);
     var response = {};
 
     response = await fetch(
@@ -25,37 +32,36 @@ export default {
 
     const data = await response.json();
     this.produits = data;
-    console.log(data)
   },
 };
 </script>
 
 <template>
-<div v-for="item in this.produits" v-bind:key="item.id" class="Products">
-    <div class="divProd">
-    <div class="divLeft">
-      <a>
-        <h3 class="title">{{ item.title }}</h3>
-      </a>
-    </div>
-    <div class="divRight">
-      <div class="divImg">
-        <img class="img" :src="item.image" />
-        <span>{{ item.price }} €</span>
+  <div v-for="item in this.produits" v-bind:key="item.id" class="Products">
+    <div class="divProduct">
+      <div class="divLeft">
+        <RouterLink to="/product" class="link" @click="selectProduct(item)">
+          <h3 class="title">{{ item.title }}</h3>
+        </RouterLink>
       </div>
-      <!-- <span class="rating">{{ produits.rating }}⭐ / 5 ( {{produits.rating}})</span>-->
+      <div class="divRight">
+        <div class="divImg">
+          <img class="img" :src="item.image" />
+          <span>{{ item.price }} €</span>
+        </div>
+        <!-- <span class="rating">{{ produits.rating }}⭐ / 5 ( {{produits.rating}})</span>-->
+      </div>
     </div>
   </div>
-</div>
 </template>
 
 
 <style>
 .Products {
-    margin: 10px;
+  margin: 10px;
 }
 
-.divProd {
+.divProduct {
   display: flex;
   width: 350px;
   height: 250px;

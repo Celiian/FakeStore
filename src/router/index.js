@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
-import Home from "../views/Home.vue";
+import Home from "../views/HomeView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -10,9 +10,24 @@ const router = createRouter({
       component: Home,
     },
     {
+      path: "/categories",
+      name: "categories",
+      component: () => import("../views/CategoriesView.vue")
+    },
+    {
+      path: "/product",
+      name: "product",
+      component: () => import("../views/ProductSelectedView.vue")
+    },
+    {
+      path: "/search",
+      name: "search",
+      component: () => import("../views/SearchView.vue")
+    },
+    {
       path: "/category",
       name: "category",
-      component: () => import("../views/Category.vue")
+      component: () => import("../views/CategoryView.vue")
     },
   ],
 });
