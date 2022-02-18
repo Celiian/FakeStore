@@ -1,66 +1,67 @@
-<script>
+<script setup>
 import Product from "./Product.vue";
-import { selectedItemStore } from '../stores/selectedItems'
+import { selectedItemStore } from "../stores/selectedItems";
+import { productListStore } from "../stores/productList";
+
+import { mapState } from "pinia";
+</script>
+
+<script>
 export default {
-  components: { Product },
-  props: {
-    category: String,
-    limit: Number,
+  computed: {
+    ...mapState(selectedItemStore, ["categoryChoosed"]),
+    ...mapState(productListStore, ["productByCategory"]),
   },
+
+  components: { Product },
   data() {
     return {
       produits: [],
+      limit: 20,
+      category: "",
+      productByCategorylist: new Map(),
     };
+  },
+  watch: {
+    categoryChoosed: function () {
+      this.category = this.categoryChoosed;
+      this.produits = this.productByCategorylist.get(this.category);
+    },
   },
   methods: {
     selectProduct(item) {
-    const selectedProduct = selectedItemStore();
-    selectedProduct.setChoosedProduct(item)
+      const selectedProduct = selectedItemStore();
+      selectedProduct.setChoosedProduct(item);
     },
-  
   },
-
   async created() {
-    var response = {};
-
-    response = await fetch(
-      "https://fakestoreapi.com/products/category/" +
-        this.category +
-        "?limit=" +
-        this.limit
-    );
-
-    const data = await response.json();
-    this.produits = data;
+    const productList = productListStore();
+    productList.fetchProductByCategory();
+    this.productByCategorylist = this.productByCategory;
+    this.category = this.categoryChoosed;
+    this.produits = this.productByCategorylist.get(this.category);
   },
 };
 </script>
 
 <template>
-  <div v-for="item in this.produits" v-bind:key="item.id" class="Products">
-    <div class="divProduct">
-      <div class="divLeft">
-        <RouterLink to="/product" class="link" @click="selectProduct(item)">
-          <h3 class="title">{{ item.title }}</h3>
-        </RouterLink>
+  <div class="divProduct" v-for="item in this.produits" v-bind:key="item.id">
+    <div class="divLeft">
+      <RouterLink to="/product" class="link" @click="selectProduct(item)">
+        <h3 class="title">{{ item.title }}</h3>
+      </RouterLink>
+    </div>
+    <div class="divRight">
+      <div class="divImg">
+        <img class="img" :src="item.image" />
+        <span>{{ item.price }} €</span>
       </div>
-      <div class="divRight">
-        <div class="divImg">
-          <img class="img" :src="item.image" />
-          <span>{{ item.price }} €</span>
-        </div>
-        <!-- <span class="rating">{{ produits.rating }}⭐ / 5 ( {{produits.rating}})</span>-->
-      </div>
+      <!-- <span class="rating">{{ produits.rating }}⭐ / 5 ( {{produits.rating}})</span>-->
     </div>
   </div>
 </template>
 
-
 <style>
-.Products {
-  margin: 10px;
-}
-
 .divProduct {
   display: flex;
   width: 350px;
@@ -70,6 +71,7 @@ export default {
   border-radius: 3%;
 
   padding: 20px;
+  margin: 1%;
 }
 .divLeft {
   margin-right: 5%;

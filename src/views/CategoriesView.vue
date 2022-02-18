@@ -28,7 +28,7 @@ async created() {
   <div v-for="item in this.categories" v-bind:key="item" class="divCategory">
     <p class="categoryName">{{item}} :</p>
     <div class="divProducts">
-    <ProductByCategory :category="item" :limit=20 />
+    <ProductByCategory :categoryProps="item" :limitProps=20 />
     </div>
   </div>
 </div>

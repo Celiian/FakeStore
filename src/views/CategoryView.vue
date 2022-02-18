@@ -1,34 +1,44 @@
 <script setup>
 import { selectedItemStore } from "../stores/selectedItems";
 import ProductByCategory from "../components/ProductByCategory.vue";
+import { mapState } from "pinia";
 </script>
 
 <script>
 export default {
+  computed: {
+    ...mapState(selectedItemStore, ["categoryChoosed"]),
+  },
   data() {
     return {
-      actualCategory: String,
+      category: String,
     };
   },
-  methods: {
-    refresh() {
-      const selectedItems = selectedItemStore();
-      this.actualCategory = selectedItems.getChoosedCategory;
-    },
+  methods: {},
+  created: function() {
+    this.category = this.categoryChoosed;
   },
-  created: function () {
-    const selectedItems = selectedItemStore();
-    this.actualCategory = selectedItems.getChoosedCategory;
+  watch: {
+    categoryChoosed: function () {
+      this.category = this.categoryChoosed;
+    },
   },
 };
 </script>
 
-
 <template>
-  <div @click="refresh()">
-    <p class="categoryName">{{ this.actualCategory }} :</p>
+  <div>
+    <p class="categoryName">{{ this.category }} :</p>
     <div class="divProducts">
-      <ProductByCategory :category="this.actualCategory" :limit="20" />
+      <ProductByCategory/>
     </div>
   </div>
 </template>
+
+
+<style>
+.divProducts {
+  display: flex;
+  flex-wrap: wrap;
+}
+</style>

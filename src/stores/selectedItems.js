@@ -4,8 +4,9 @@ export const selectedItemStore = defineStore({
   id: "selectedItemStore",
   state: () => ({
     selectedProduct: {},
-    listOfSearchedproducts: {},
-    categoryChoosed: String,
+    listOfSearchedproducts: [],
+    categoryChoosed: "",
+    productList: {},
   }),
   getters: {
     getChoosedProduct: function () {
@@ -17,6 +18,9 @@ export const selectedItemStore = defineStore({
     getChoosedCategory: function () {
       return this.categoryChoosed
     },
+    getProductList: function () {
+      return this.productList
+    },
   },
   actions: {
     setChoosedProduct(productChoosed) {
@@ -27,6 +31,9 @@ export const selectedItemStore = defineStore({
     },
     setCategoryChoosed(category) {
       this.categoryChoosed = category;
+    },
+    setProductList(list) {
+      this.productList = list
     }
   },
 });

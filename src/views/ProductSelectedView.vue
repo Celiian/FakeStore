@@ -30,7 +30,7 @@ export default {
         <h2 class="title">{{ this.item.title }}</h2>
         <p class="price">{{ this.item.price }} $</p>
         <p>{{ this.item.description }}</p>
-        <span class="rating">{{ item.rating.rate }}⭐ / 5 ( {{ item.rating.count }})</span>
+        <!--<span class="rating">{{ item.rating.rate }}⭐ / 5 ( {{ item.rating.count }})</span>-->
       </div>
 
       <div class="divBuy">

@@ -1,30 +1,30 @@
 <script setup>
 import { selectedItemStore } from "../stores/selectedItems";
+import { mapState } from "pinia";
 </script>
 <script>
 export default {
-  props: {},
+  computed: {
+    ...mapState(selectedItemStore, ["listOfSearchedproducts"]),
+  },
   data() {
     return {
       products: [],
     };
   },
-  methods: {
-    refresh() {
-      const selectedProduct = selectedItemStore();
-      this.products = selectedProduct.getListOfSearchedproducts;
-    },
-  },
   created: function () {
-    const selectedProduct = selectedItemStore();
-    this.products = selectedProduct.getListOfSearchedproducts;
+    this.products = this.listOfSearchedproducts;
+  },
+  watch: {
+    listOfSearchedproducts: function () {
+      this.products = this.listOfSearchedproducts;
+    },
   },
 };
 </script>
 
 <template>
   <div>
-
     <div v-for="item in this.products" v-bind:key="item.id" class="Products">
       <div class="divProduct">
         <div class="divLeft">

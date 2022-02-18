@@ -1,4 +1,5 @@
 <script>
+import { mapState } from 'pinia';
 import { productListStore } from "../stores/productList";
 import { selectedItemStore } from "../stores/selectedItems";
 
@@ -16,11 +17,11 @@ export default {
   },
   methods: {
     search() {
-      const productList = productListStore();
       const searchBar = document.getElementById("searchBar");
       var research = searchBar.value.toLowerCase();
       const listOfProducts = this.listProduct.productList;
       this.itemFound = false;
+      this.listOfProductFound = []
       for (var i in listOfProducts) {
         if (listOfProducts[i].title.toLowerCase().includes(research))
           this.listOfProductFound.push(listOfProducts[i]);
@@ -29,8 +30,7 @@ export default {
       if (this.itemFound) {
         const selectedProduct = selectedItemStore();
         selectedProduct.setListOfSearchedproducts(this.listOfProductFound);
-        console.log(this.listOfProductFound);
-       // window.location = "http://localhost:3000/search";
+        this.$router.push('/search')
       }
     },
     chooseCategory(category) {
@@ -59,9 +59,9 @@ export default {
       <RouterLink to="/categories" class="link">All Categories</RouterLink>
 
       <RouterLink
-        v-for="category in categories"
+        v-for="category in this.categories"
         v-bind:key="category"
-        to="/category"
+        :to="'/category/' + category + '/20'"
         class="link"
         @click="chooseCategory(category)"
       >
@@ -69,6 +69,7 @@ export default {
       </RouterLink>
     </div>
     <div>
+    
       <input
         id="searchBar"
         type="text"
@@ -76,6 +77,7 @@ export default {
         class="searchBar"
         v-on:keyup.enter="search()"
       />
+
     </div>
   </nav>
 </template>
